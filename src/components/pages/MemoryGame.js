@@ -52,7 +52,7 @@ export default function MemoryGame() {
                 break;
             }
             case false: {
-                sleep(3000).then(() => {
+                sleep(1000).then(() => {
                     selectedCards.forEach(card => {
                         if(card.getAttribute('data-solved') === 'no');
                         card.className = 'card-down';
