@@ -7,9 +7,34 @@ export default function MemoryGame() {
 
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    const handleMoreSelected = (selectedCards) => {
+    const openModal = () => {
+        const modal = document.getElementById('modal');
+        modal.style.display="flex";
+    }
+
+    const closeModal = () => {
+        const modal = document.getElementById('modal');
+        modal.style.display="none";
+    }
+
+    const numberOfSelected = () => {
+        const selectedCards = document.querySelectorAll('.selected');
+        return selectedCards.length;
+    }
+
+    const numberOfSolved = () => {
+        const selectedCards = document.querySelectorAll('.solved');
+        return selectedCards.length;
+    }
+
+    const getSelected = () => {
+        return document.querySelectorAll('.selected');
+    }
+
+    const handleSelected = (selectedCards) => {
         const idArray = [];
         selectedCards.forEach(card => {
+            console.log(card.getAttribute('data-id'))
             idArray.push(
                 card.getAttribute('data-id')
             );
@@ -19,8 +44,11 @@ export default function MemoryGame() {
             case true: {
                 selectedCards.forEach(card => {
                     card.setAttribute('data-solved', 'yes');
-                    card.className = 'card-up';
+                    card.className = 'card-up solved';
                 })
+                if (numberOfSolved() === (numberOfChildren*2)){
+                    openModal();
+                }
                 break;
             }
             case false: {
@@ -35,19 +63,27 @@ export default function MemoryGame() {
         }
     }
 
-    const handleSelected = () => {
-        const selectedCards = document.querySelectorAll('.selected');
-        if (selectedCards.length > 1) handleMoreSelected(selectedCards);
+
+    const showCard = (id) => {
+        if (numberOfSelected() < 2) {
+            const selectedCard = document.getElementById(id);
+            if (selectedCard.getAttribute('data-solved') != 'yes'){
+                selectedCard.className='card-up selected';
+            }
+        }
+        if (numberOfSelected() > 1) {
+            handleSelected(getSelected());
+        }
     }
 
-        const hideCards = () => {
-        cards.map((card) => {
-            const selectedCard = document.getElementById(card.id);
-            if (selectedCard.getAttribute('data-solved') === 'no') {
-                selectedCard.className = 'card-down';
-            }
-        })
-    }
+const hideCards = () => {
+    cards.map((card) => {
+        const selectedCard = document.getElementById(card.id);
+        if (selectedCard.getAttribute('data-solved') === 'no') {
+            selectedCard.className = 'card-down';
+        }
+    })
+}
 
     const refreshCards = () => {
             cards.map((card) => {
@@ -77,14 +113,6 @@ export default function MemoryGame() {
             cardDiv.innerText = card.value;
             i++;
         })
-    }
-
-    const showCard = (id) => {
-        const selectedCard = document.getElementById(id);
-        if (selectedCard.getAttribute('data-solved') != 'yes'){
-            selectedCard.className='card-up selected';
-            handleSelected();
-        }
     }
 
     const showResult= () => {
@@ -135,21 +163,35 @@ export default function MemoryGame() {
     }
 
     return (
-            <div>
-                <button type="button" onClick={showResult}>Show result</button>
+            <>
+                <nav>
+                    <button type="button" onClick={showResult}>Show result</button>
 
-                <button type="button" onClick={resetCards}>Reset Cards</button>
-                <div id= "card-container" className="card-container">
-                    {
-                        cards.map((card) => (
-                            <div id={card.id} data-id={card.data} data-solved={'no'} className='card-down' key={card.id} onClick = {card.onClick}>
-                                <p>
-                                    {card.value}
-                                </p>
+                    <button type="button" onClick={resetCards}>Start over</button>
+                </nav>
+                <main>
+                    <div id= "card-container" className="card-container">
+                        {
+                            cards.map((card) => (
+                                <div id={card.id} data-id={card.data} data-solved={'no'} className='card-down' key={card.id} onClick = {card.onClick}>
+                                    <p>
+                                        {card.value}
+                                    </p>
+                                </div>
+                            ))
+                        }
+                    </div>
+                    <div id="modal">
+                        <div>
+                            <div>
+                                <p>Excellent!</p>
                             </div>
-                        ))
-                    }
-                </div>
-            </div>
+                            <div>
+                            <button className="button rounded-2" type="button" onClick={closeModal}>OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </>
         )
 }

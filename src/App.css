@@ -1,106 +1,104 @@
 .App {
     text-align: center;
-  }
+}
 
-  .App-logo {
-    height: 40vmin;
-    pointer-events: none;
-  }
+body {
+    color: #333333;
+    max-width: 922px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-  @media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-    }
-  }
-
-  .App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-
-  .App-link {
-    color: #61dafb;
-  }
-
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  h1 {
-      text-align: center;
-  }
-
-  p {
-      max-width: 90vw;
-  }
-
-  nav {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 3rem;
-      background-color: #282c34;
-  }
-
-  nav .nav-item {
-      color: cornsilk;
-      text-decoration: none;
-  }
-
-  section {
-      display: flex;
-      align-content: center;
-      max-width: 90vw;
-      margin: 0 auto;
-  }
-
-  .board-container {
-    margin: 3rem auto 0 auto;
-    max-width: 50vW;
-    position: relative;
-    border-radius: 5px;
+#root {
+    background-color: #F7FBFF;
+    margin-left: auto;
+    margin-top: auto;
 }
 
 .card-container {
-    max-width: 50vW;
+
+}
+
+    main {
+    margin: 5rem auto 0 auto;
+    }
+
+    nav {
+    margin: 0 auto 0 auto;
+    }
+
+    nav button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    }
+
+    .board-container {
+    margin: 0 auto 0 auto;
+    max-width: 100%;
+    position: relative;
+    border-radius: 5px;
+    }
+
+    .card-container {
+    max-width: 100%;
     display: grid;
-    grid-gap: 4px;
+    grid-gap: 0.1rem;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     margin: 5rem auto 0 auto;
-}
+    }
 
-.card-down {
+    .card-down {
     aspect-ratio: 1/1.5;
     cursor: pointer;
-    margin:10px;
+    margin:1rem;
     background-image: url('https://prof.rammelion.hu/card.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     color:transparent;
-}
+    }
 
-.card-up {
+    .card-up {
     aspect-ratio: 1/1.5;
     cursor: pointer;
-    margin:10px;
+    margin:1rem;
     border: 1px solid #09529F;
     border-radius: 5px;
     background-image: url('https://prof.rammelion.hu/card-up.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
-    line-height: 220px;
+    line-height: 1rem;
     color:black;
-}
+    }
+
+    #modal {
+        display:none;
+        position: relative;
+        top: -30rem;
+        margin-left: auto;
+        margin-right: auto;
+        aspect-ratio: 1.5/1;
+        width:25vw;
+        height: 25vh;
+        z-index: 255;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #09529F;
+        border-radius: 5px;
+        background-color: white;
+    }
+
+    #modal p {
+        display: flex;
+        text-align: center;
+    }
+
+    #modal button {
+        background-color: #09529F;
+        color: white;
+        width:100%;
+        align-self: center;
+        justify-self: center;
+    }
