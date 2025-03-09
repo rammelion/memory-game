@@ -8,14 +8,13 @@ import { faDivide } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react"
 import { useReducer } from "react";
 
-
+import CookieBar from "../CookieBar";
 import getLanguage from "../resources/Strings";
 import FlagIcon from "../FlagIcon";
 
 
 
 export default function MemoryGame() {
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const numberOfChildren = 6;
     const [cards, setCards] = useState(fisherYatesShuffle(addCards(numberOfChildren)));
 
@@ -23,7 +22,6 @@ export default function MemoryGame() {
 
     const switchLanguage = (language) => {
         const appStrings = getLanguage(language);
-        forceUpdate();
         console.log(appStrings);
     }
 
@@ -187,34 +185,34 @@ const hideCards = () => {
     return (
             <>
                 <nav className="pt-5">
-                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.flagHUHint}>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.flagHUHint}>
                         <button type="button" id="hu" className="flag" onClick={() => {switchLanguage('hu')}} >
                             <FlagIcon country="HU" />
                         </button>
                     </span>
-                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.flagUSHint}>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.flagUSHint}>
                         <button type="button" language="en" className="flag" onClick={() => {switchLanguage("us")}} >
                             <FlagIcon country="US" />
                         </button>
                     </span>
                 </nav>
                 <nav className="pt-5">
-                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.bulbHint}>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.bulbHint}>
                         <button type="button" className="command" onClick={showResult}><FontAwesomeIcon icon={faLightbulb} size="2x" /></button>
                     </span>
-                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.restartHint}>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.restartHint}>
                         <button type="button" className="command" onClick={resetCards}><FontAwesomeIcon icon={faRecycle} size="2x" /></button>
                     </span>
-                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.plusHint}>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.plusHint}>
                         <button type="button" className="operator selected"><FontAwesomeIcon icon={faPlus} size="2x" /></button>
                     </span>
-                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.minusHint}>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.minusHint}>
                         <button type="button" className="operator"><FontAwesomeIcon icon={faMinus} size="2x" /></button>
                     </span>
-                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.muliplicationHint}>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.muliplicationHint}>
                         <button type="button" className="operator"><FontAwesomeIcon icon={faXmark} size="2x" /></button>
                     </span>
-                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.divisionHint}>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.divisionHint}>
                         <button type="button" className="operator"><FontAwesomeIcon icon={faDivide} size="2x" /></button>
                     </span>
                 </nav>
@@ -241,6 +239,7 @@ const hideCards = () => {
                         </div>
                     </div>
                 </main>
+                <CookieBar />
             </>
         )
 }

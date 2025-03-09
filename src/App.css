@@ -137,3 +137,11 @@ body {
         align-self: center;
         justify-self: center;
     }
+
+    .show-cookiebar {
+        display: flex;
+    }
+
+    .hide-cookiebar {
+        display: none;
+    }
