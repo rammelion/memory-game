@@ -28,9 +28,44 @@ body {
     }
 
     nav button {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    display: inline-block;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 0.5rem;
+    color: #09529F;
+    background-color: transparent;
+    }
+
+    nav .flag {
+        border: none;
+    }
+
+    nav .operator {
+        border: none;
+        border-radius: 0.3rem;
+        background-color: #09529F;
+        color: white;
+    }
+
+    nav .operator:hover, nav .operator .selected {
+        border: 1px solid #09529F;
+        color: #09529F;
+        background-color: white;
+    }
+
+    nav .operator .selected:hover {
+        border: none;
+        background-color: #09529F;
+        color: white;
+    }
+
+    
+
+
+
+    nav .command {
+        border: 1px solid #09529F;
+        border-radius: 50%;
     }
 
     .board-container {

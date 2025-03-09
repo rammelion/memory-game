@@ -1,11 +1,33 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
+import { faRecycle } from "@fortawesome/free-solid-svg-icons"; 
+import { faLightbulb } from "@fortawesome/free-solid-svg-icons"; 
+import { faPlus } from "@fortawesome/free-solid-svg-icons"; 
+import { faMinus } from "@fortawesome/free-solid-svg-icons"; 
+import { faXmark } from "@fortawesome/free-solid-svg-icons"; 
+import { faDivide } from "@fortawesome/free-solid-svg-icons"; 
 import { useState } from "react"
-import { useEffect } from "react";
+import { useReducer } from "react";
+
+
+import getLanguage from "../resources/Strings";
+import FlagIcon from "../FlagIcon";
+
+
 
 export default function MemoryGame() {
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const numberOfChildren = 6;
     const [cards, setCards] = useState(fisherYatesShuffle(addCards(numberOfChildren)));
 
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+    const switchLanguage = (language) => {
+        const appStrings = getLanguage(language);
+        forceUpdate();
+        console.log(appStrings);
+    }
+
+    const appStrings =  getLanguage('en');
 
     const openModal = () => {
         const modal = document.getElementById('modal');
@@ -164,10 +186,37 @@ const hideCards = () => {
 
     return (
             <>
-                <nav>
-                    <button type="button" onClick={showResult}>Show result</button>
-
-                    <button type="button" onClick={resetCards}>Start over</button>
+                <nav className="pt-5">
+                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.flagHUHint}>
+                        <button type="button" id="hu" className="flag" onClick={() => {switchLanguage('hu')}} >
+                            <FlagIcon country="HU" />
+                        </button>
+                    </span>
+                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.flagUSHint}>
+                        <button type="button" language="en" className="flag" onClick={() => {switchLanguage("us")}} >
+                            <FlagIcon country="US" />
+                        </button>
+                    </span>
+                </nav>
+                <nav className="pt-5">
+                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.bulbHint}>
+                        <button type="button" className="command" onClick={showResult}><FontAwesomeIcon icon={faLightbulb} size="2x" /></button>
+                    </span>
+                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.restartHint}>
+                        <button type="button" className="command" onClick={resetCards}><FontAwesomeIcon icon={faRecycle} size="2x" /></button>
+                    </span>
+                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.plusHint}>
+                        <button type="button" className="operator selected"><FontAwesomeIcon icon={faPlus} size="2x" /></button>
+                    </span>
+                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.minusHint}>
+                        <button type="button" className="operator"><FontAwesomeIcon icon={faMinus} size="2x" /></button>
+                    </span>
+                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.muliplicationHint}>
+                        <button type="button" className="operator"><FontAwesomeIcon icon={faXmark} size="2x" /></button>
+                    </span>
+                    <span className="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title={appStrings.divisionHint}>
+                        <button type="button" className="operator"><FontAwesomeIcon icon={faDivide} size="2x" /></button>
+                    </span>
                 </nav>
                 <main>
                     <div id= "card-container" className="card-container">
