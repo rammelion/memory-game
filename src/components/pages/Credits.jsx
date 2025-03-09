@@ -1,4 +1,4 @@
-export default function Credits(props) {
+export default function Credits() {
     return (
         <div>
             <h1>Credits</h1>

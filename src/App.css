@@ -10,7 +10,7 @@ body {
 }
 
 #root {
-    background-color: #F7FBFF;
+
     margin-left: auto;
     margin-top: auto;
 }
@@ -58,10 +58,6 @@ body {
         background-color: #09529F;
         color: white;
     }
-
-    
-
-
 
     nav .command {
         border: 1px solid #09529F;
@@ -138,10 +134,20 @@ body {
         justify-self: center;
     }
 
+    #cookie-bar {
+    }
+
     .show-cookiebar {
-        display: flex;
+        display: block;
     }
 
     .hide-cookiebar {
         display: none;
+    }
+
+    .button-container {
+        display: grid;
+        grid-gap: 0.1rem;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: space-around;
     }

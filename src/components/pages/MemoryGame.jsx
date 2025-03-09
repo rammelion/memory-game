@@ -6,11 +6,13 @@ import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons"; 
 import { faDivide } from "@fortawesome/free-solid-svg-icons"; 
 import { useState } from "react"
-import { useReducer } from "react";
+//import { useReducer } from "react";
 
-import CookieBar from "../CookieBar";
+import Nav from '../semantics/Nav'
+
+import CookieBar from "../resources/cookies/CookieBar";
 import getLanguage from "../resources/Strings";
-import FlagIcon from "../FlagIcon";
+import FlagIcon from "../resources/FlagIcon";
 
 
 
@@ -96,21 +98,21 @@ export default function MemoryGame() {
         }
     }
 
-const hideCards = () => {
-    cards.map((card) => {
-        const selectedCard = document.getElementById(card.id);
-        if (selectedCard.getAttribute('data-solved') === 'no') {
-            selectedCard.className = 'card-down';
-        }
-    })
-}
+/*  const hideCards = () => {
+        cards.map((card) => {
+            const selectedCard = document.getElementById(card.id);
+            if (selectedCard.getAttribute('data-solved') === 'no') {
+                selectedCard.className = 'card-down';
+            }
+        })
+    }*/
 
-    const refreshCards = () => {
+/*    const refreshCards = () => {
             cards.map((card) => {
             const selectedCard = document.getElementById(card.id);
             selectedCard.className = (selectedCard.getAttribute('data-solved')) ? 'card-up' : 'card-down';
         })
-    }
+    }*/
 
 
 
@@ -184,7 +186,7 @@ const hideCards = () => {
 
     return (
             <>
-                <nav className="pt-5">
+                <nav id="language-selector" className="pt-5">
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.flagHUHint}>
                         <button type="button" id="hu" className="flag" onClick={() => {switchLanguage('hu')}} >
                             <FlagIcon country="HU" />
@@ -196,15 +198,9 @@ const hideCards = () => {
                         </button>
                     </span>
                 </nav>
-                <nav className="pt-5">
-                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.bulbHint}>
-                        <button type="button" className="command" onClick={showResult}><FontAwesomeIcon icon={faLightbulb} size="2x" /></button>
-                    </span>
-                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.restartHint}>
-                        <button type="button" className="command" onClick={resetCards}><FontAwesomeIcon icon={faRecycle} size="2x" /></button>
-                    </span>
+                <nav id="action-selector" className="pt-3">
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.plusHint}>
-                        <button type="button" className="operator selected"><FontAwesomeIcon icon={faPlus} size="2x" /></button>
+                        <button type="button" className="operator active"><FontAwesomeIcon icon={faPlus} size="2x" /></button>
                     </span>
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.minusHint}>
                         <button type="button" className="operator"><FontAwesomeIcon icon={faMinus} size="2x" /></button>
@@ -216,6 +212,15 @@ const hideCards = () => {
                         <button type="button" className="operator"><FontAwesomeIcon icon={faDivide} size="2x" /></button>
                     </span>
                 </nav>
+                <nav id="action-selector" className="pt-5">
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.bulbHint}>
+                        <button type="button" className="command" onClick={showResult}><FontAwesomeIcon icon={faLightbulb} size="2x" /></button>
+                    </span>
+                    <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.restartHint}>
+                        <button type="button" className="command" onClick={resetCards}><FontAwesomeIcon icon={faRecycle} size="2x" /></button>
+                    </span>
+                </nav>
+                
                 <main>
                     <div id= "card-container" className="card-container">
                         {
@@ -239,7 +244,6 @@ const hideCards = () => {
                         </div>
                     </div>
                 </main>
-                <CookieBar />
             </>
         )
 }
