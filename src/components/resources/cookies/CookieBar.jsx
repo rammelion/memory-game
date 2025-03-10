@@ -8,6 +8,7 @@ export default function CookieBar() {
     const [isCookieSet, setCookie] = useState(Cookies.get("cookieConsent"));
 
     const googleCookie = '_ga_DR8ZC0N9JR';
+    const googleTagsArguments='analytics';
 
     const initCookieBar = () => {
         if (isCookieSet != null){
@@ -30,7 +31,7 @@ export default function CookieBar() {
         setCookie(true);
         window.dataLayer = window.dataLayer || [];
         localStorage.setItem("consentGranted", "true");
-        function gtag() { window.dataLayer.push(arguments); }
+        function gtag() { window.dataLayer.push(googleTagsArguments); }
     
         gtag('consent', 'update', {
             ad_user_data: 'granted',
@@ -38,6 +39,24 @@ export default function CookieBar() {
             ad_storage: 'granted',
             analytics_storage: 'granted'
         });
+
+        dataLayer.push({
+            event: "gtm.load",
+            pageType: "product", // Type of page (e.g., "home", "product", "checkout")
+            productID: "01",  // Product ID (useful for e-commerce tracking)
+            productName: "MemoryGame", // Name of the product
+            productCategory: "Teaching Game", // Category of the product
+            //userID: "user123", // Unique identifier for the user
+            userStatus: "guest", // User status (e.g., "guest", "logged_in")
+            /*cartValue: 59.99, // Total value of the items in the shopping cart
+            currency: "USD", // Currency code (e.g., "USD", "EUR")
+            transactionID: "txn98765", // Unique identifier for a transaction
+            eventAction: "click", // Action performed by the user (e.g., "click", "view")
+            eventCategory: "button", // Category of the event (e.g., "button", "link")
+            eventLabel: "signupButton", // Label for the event (e.g., "signupButton", "promoBanner")*/
+            timestamp: new Date().toISOString() // Current date and time in ISO format
+          });
+          
         
         
           // Load gtag.js script.
