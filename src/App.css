@@ -84,7 +84,7 @@ body {
     aspect-ratio: 1/1.5;
     cursor: pointer;
     margin:1rem;
-    background-image: url('https://prof.rammelion.hu/card.jpg');
+    background-image: url('https://memorygame.rammelion.hu/assets/img/card.webp');
     background-repeat: no-repeat;
     background-size: cover;
     color:transparent;
@@ -96,7 +96,7 @@ body {
     margin:1rem;
     border: 1px solid #09529F;
     border-radius: 5px;
-    background-image: url('https://prof.rammelion.hu/card-up.jpg');
+    background-image: url('https://memorygame.rammelion.hu/assets/img/card-up.webp');
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
