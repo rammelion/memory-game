@@ -1,12 +1,12 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
-import { faRecycle } from "@fortawesome/free-solid-svg-icons"; 
-import { faLightbulb } from "@fortawesome/free-solid-svg-icons"; 
-import { faPlus } from "@fortawesome/free-solid-svg-icons"; 
-import { faMinus } from "@fortawesome/free-solid-svg-icons"; 
-import { faXmark } from "@fortawesome/free-solid-svg-icons"; 
-import { faDivide } from "@fortawesome/free-solid-svg-icons"; 
-import { useState } from "react"
-//import { useReducer } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRecycle } from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faDivide } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react"
+import Cookies from "js-cookie";
 
 import Nav from '../semantics/Nav'
 
@@ -16,18 +16,31 @@ import FlagIcon from "../resources/FlagIcon";
 
 
 
-export default function MemoryGame() {
+export default function MemoryGame({reFresh}) {
+
+    useEffect(() => {
+        reRender();
+      }, [reFresh]);
+
+    const [key, setKey] = useState(0);
+    const reRender= () => {
+        setKey(key + 1);
+    }
+    const Lang =(Cookies.get('la') != null) ? Cookies.get('la') : 'us';
+    const getLanBar = (Cookies.get('la') != null) ? true : false;
+    const getOPBar = (Cookies.get('op') != null) ? true : false;
+
     const numberOfChildren = 6;
-    const [cards, setCards] = useState(fisherYatesShuffle(addCards(numberOfChildren)));
+    const [cards, setCards] = useState(shuffle(addCards(numberOfChildren)));
 
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     const switchLanguage = (language) => {
-        const appStrings = getLanguage(language);
-        console.log(appStrings);
+        Cookies.set('la', language);
+        reRender();
     }
 
-    const appStrings =  getLanguage('en');
+    const appStrings =  getLanguage(Lang);
 
     const openModal = () => {
         const modal = document.getElementById('modal');
@@ -118,7 +131,7 @@ export default function MemoryGame() {
 
     const resetCards = () => {
         const oldCards = cards;
-        setCards(fisherYatesShuffle(addCards(numberOfChildren)));
+        setCards(shuffle(addCards(numberOfChildren)));
         const boardDiv = document.getElementById("card-container");
         const cardDivs = boardDiv.querySelectorAll('div');
         let i = 0
@@ -170,22 +183,27 @@ export default function MemoryGame() {
         return array;
     }
 
-    function fisherYatesShuffle(array) {
+    function shuffle(array) {
+        var m = array.length, t, i;
 
-        // Iterate over the array in reverse order
-        for (let i = array.length - 1; i > 0; i--) {
+        // While there remain elements to shuffle…
+        while (m) {
 
-            // Generate Random Index
-            const j = Math.floor(Math.random() * (i + 1));
+          // Pick a remaining element…
+          i = Math.floor(Math.random() * m--);
 
-            // Swap elements
-            [array[i], array[j]] = [array[j], array[i]];
+          // And swap it with the current element.
+          t = array[m];
+          array[m] = array[i];
+          array[i] = t;
         }
+
         return array;
-    }
+      }
 
     return (
             <>
+                {(getLanBar)?
                 <nav id="language-selector" className="pt-5">
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.flagHUHint}>
                         <button type="button" id="hu" className="flag" onClick={() => {switchLanguage('hu')}} >
@@ -197,7 +215,8 @@ export default function MemoryGame() {
                             <FlagIcon country="US" />
                         </button>
                     </span>
-                </nav>
+                </nav> : ''}
+                {(getOPBar)?
                 <nav id="action-selector" className="pt-3">
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.plusHint}>
                         <button type="button" className="operator active"><FontAwesomeIcon icon={faPlus} size="2x" /></button>
@@ -211,7 +230,7 @@ export default function MemoryGame() {
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.divisionHint}>
                         <button type="button" className="operator"><FontAwesomeIcon icon={faDivide} size="2x" /></button>
                     </span>
-                </nav>
+                </nav>: ''}
                 <nav id="action-selector" className="pt-5">
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.bulbHint}>
                         <button type="button" className="command" onClick={showResult}><FontAwesomeIcon icon={faLightbulb} size="2x" /></button>
@@ -220,7 +239,7 @@ export default function MemoryGame() {
                         <button type="button" className="command" onClick={resetCards}><FontAwesomeIcon icon={faRecycle} size="2x" /></button>
                     </span>
                 </nav>
-                
+
                 <main>
                     <div id= "card-container" className="card-container">
                         {
@@ -236,7 +255,7 @@ export default function MemoryGame() {
                     <div id="modal">
                         <div>
                             <div>
-                                <p>Excellent!</p>
+                                <p>{appStrings.praiseText}</p>
                             </div>
                             <div>
                             <button className="button rounded-2" type="button" onClick={closeModal}>OK</button>
