@@ -13,6 +13,7 @@ import Nav from '../semantics/Nav'
 import CookieBar from "../resources/cookies/CookieBar";
 import getLanguage from "../resources/Strings";
 import FlagIcon from "../resources/FlagIcon";
+import Numbers from "../resources/Numbers";
 
 
 
@@ -27,6 +28,7 @@ export default function MemoryGame({reFresh}) {
         setKey(key + 1);
     }
     const Lang =(Cookies.get('la') != null) ? Cookies.get('la') : 'us';
+    const Opt =(Cookies.get('op') != null) ? Cookies.get('op') : 'add';
     const getLanBar = (Cookies.get('la') != null) ? true : false;
     const getOPBar = (Cookies.get('op') != null) ? true : false;
 
@@ -36,8 +38,15 @@ export default function MemoryGame({reFresh}) {
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     const switchLanguage = (language) => {
+        //Cookies.remove('la');
         Cookies.set('la', language);
         reRender();
+    }
+
+    const switchOperation = (operation) => {
+        Cookies.remove('op');
+        Cookies.set('op', operation);
+        window.location.reload(false);
     }
 
     const appStrings =  getLanguage(Lang);
@@ -79,7 +88,7 @@ export default function MemoryGame({reFresh}) {
             case true: {
                 selectedCards.forEach(card => {
                     card.setAttribute('data-solved', 'yes');
-                    card.className = 'card-up solved';
+                    card.className = 'card card-up solved';
                 })
                 if (numberOfSolved() === (numberOfChildren*2)){
                     openModal();
@@ -90,7 +99,7 @@ export default function MemoryGame({reFresh}) {
                 sleep(1000).then(() => {
                     selectedCards.forEach(card => {
                         if(card.getAttribute('data-solved') === 'no');
-                        card.className = 'card-down';
+                        card.className = 'card card-down';
                     })
                 });
                 break;
@@ -103,7 +112,7 @@ export default function MemoryGame({reFresh}) {
         if (numberOfSelected() < 2) {
             const selectedCard = document.getElementById(id);
             if (selectedCard.getAttribute('data-solved') != 'yes'){
-                selectedCard.className='card-up selected';
+                selectedCard.className='card card-up selected';
             }
         }
         if (numberOfSelected() > 1) {
@@ -115,7 +124,7 @@ export default function MemoryGame({reFresh}) {
         cards.map((card) => {
             const selectedCard = document.getElementById(card.id);
             if (selectedCard.getAttribute('data-solved') === 'no') {
-                selectedCard.className = 'card-down';
+                selectedCard.className = 'card card-down';
             }
         })
     }*/
@@ -123,7 +132,7 @@ export default function MemoryGame({reFresh}) {
 /*    const refreshCards = () => {
             cards.map((card) => {
             const selectedCard = document.getElementById(card.id);
-            selectedCard.className = (selectedCard.getAttribute('data-solved')) ? 'card-up' : 'card-down';
+            selectedCard.className = (selectedCard.getAttribute('data-solved')) ? 'card card-up' : 'card card-down';
         })
     }*/
 
@@ -138,7 +147,7 @@ export default function MemoryGame({reFresh}) {
         cardDivs.forEach(cardDiv => {
             const card = cards[i];
             const oldCard = oldCards[i];
-            cardDiv.className = 'card-down';
+            cardDiv.className = 'card card-down';
             cardDiv.setAttribute("key", card.id);
             cardDiv.setAttribute("id", card.id);
             cardDiv.setAttribute("data-id", card.data);
@@ -153,28 +162,71 @@ export default function MemoryGame({reFresh}) {
     const showResult= () => {
         cards.map((card) => {
             const selectedCard = document.getElementById(card.id);
-            selectedCard.className = 'card-up';
+            selectedCard.className = 'card card-up';
             selectedCard.setAttribute("data-solved", 'yes');
         })
     }
 
     function addCards(num) {
         const array = [];
+        console.log(Opt);
+        const secondRandom = (Opt) => {
+            switch (Opt){
+                case 'add': {return Math.floor(Math.random() * 90 + 10);}
+                case 'sub': {return Math.floor(Math.random() * 70 + 10);}
+                case 'mul': {return Math.floor(Math.random() * 9 + 1);}
+                case 'div': {return Math.floor(Math.random() * 9 + 1);}
+                default: return 0;
+            }
+        }
+        const firstRandom = (Opt, a) => {
+            switch (Opt){
+                case 'add': {return Math.floor(Math.random() * 90 + 10);}
+                case 'sub': {return a + Math.floor(Math.random() * 70 + 10);}
+                case 'mul': {return Math.floor(Math.random() * 990 + 10);}
+                case 'div': {return a*Math.floor(Math.random() * 90 + 1);}
+                default: return 0;
+            }
+        }
+        const getResult = (a, b) => {
+            switch (Opt){
+                case 'add': {return (a + b);}
+                case 'sub': {return (a - b);}
+                case 'mul': {return (a * b);}
+                case 'div': {return (a / b);}
+                default: return 0;
+            }
+        }
+
+        const getOpt = (Opt) => {
+            switch (Opt){
+                case 'add': {return '+'};
+                case 'sub': {return '-'};
+                case 'mul': {return '×'};
+                case 'div': {return ':'};
+                default: return '';
+            }
+        }
 
         for (let i=0; i < num; i++) {
-            let ranA = Math.floor(Math.random() * 90 + 10);
-            let ranB = Math.floor(Math.random() * 90 + 10);
+            let ranB = secondRandom(Opt)
+            let ranA = firstRandom(Opt, ranB);
+            const result = getResult(ranA, ranB);
             array.push({
                 'id': String(i).padStart(3,0) + 'A',
                 'data' : String(i).padStart(3,0),
-                'value' : String(ranA) + ' + ' + String(ranB),
+                'value1' : ranA,
+                'value2': getOpt(Opt),
+                'value3': ranB,
                 'solved': false,
                 'onClick': function() {showCard(String(i).padStart(3,0) + 'A')}
             });
             array.push({
                 'id': String(i).padStart(3,0) + 'B',
                 'data' : String(i).padStart(3,0),
-                'value' : String(ranA + ranB),
+                'value1': null,
+                'value2' : String(result),
+                'value3': null,
                 'solved': false,
                 'onClick': function() {showCard(String(i).padStart(3,0) + 'B')}
             });
@@ -201,6 +253,8 @@ export default function MemoryGame({reFresh}) {
         return array;
       }
 
+      const aNumber = 3;
+
     return (
             <>
                 {(getLanBar)?
@@ -219,16 +273,16 @@ export default function MemoryGame({reFresh}) {
                 {(getOPBar)?
                 <nav id="action-selector" className="pt-3">
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.plusHint}>
-                        <button type="button" className="operator active"><FontAwesomeIcon icon={faPlus} size="2x" /></button>
+                        <button type="button" className="operator active"><FontAwesomeIcon icon={faPlus} size="2x" onClick={() => {switchOperation("add")}} /></button>
                     </span>
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.minusHint}>
-                        <button type="button" className="operator"><FontAwesomeIcon icon={faMinus} size="2x" /></button>
+                        <button type="button" className="operator"><FontAwesomeIcon icon={faMinus} size="2x" onClick={() => {switchOperation("sub")}} /></button>
                     </span>
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.muliplicationHint}>
-                        <button type="button" className="operator"><FontAwesomeIcon icon={faXmark} size="2x" /></button>
+                        <button type="button" className="operator"><FontAwesomeIcon icon={faXmark} size="2x" onClick={() => {switchOperation("mul")}} /></button>
                     </span>
                     <span className="d-inline-block" tabIndex="0" data-bs-toggle="tooltip" title={appStrings.divisionHint}>
-                        <button type="button" className="operator"><FontAwesomeIcon icon={faDivide} size="2x" /></button>
+                        <button type="button" className="operator"><FontAwesomeIcon icon={faDivide} size="2x" onClick={() => {switchOperation("div")}} /></button>
                     </span>
                 </nav>: ''}
                 <nav id="action-selector" className="pt-5">
@@ -240,14 +294,37 @@ export default function MemoryGame({reFresh}) {
                     </span>
                 </nav>
 
+                
+
                 <main>
+                    <Numbers number={aNumber} size='2x' />
                     <div id= "card-container" className="card-container">
                         {
                             cards.map((card) => (
-                                <div id={card.id} data-id={card.data} data-solved={'no'} className='card-down' key={card.id} onClick = {card.onClick}>
-                                    <p>
-                                        {card.value}
-                                    </p>
+                                <div id={card.id} data-id={card.data} data-solved={'no'} className='card card-down' key={card.id} onClick = {card.onClick}>
+                                    <div className="container text-center">
+                                        <div className="row align-items-center">
+                                            {(card.value1)?
+                                                <div classname="col">
+                                                    <p>
+                                                        {card.value1}
+                                                    </p>
+                                                </div>
+                                            :''}
+                                            <div className="col">
+                                                <p>
+                                                    {card.value2}
+                                                </p>
+                                            </div>
+                                            {(card.value1)?
+                                                <div>
+                                                    <p>
+                                                        {card.value3}
+                                                    </p>
+                                                </div>
+                                            :''}
+                                        </div>
+                                    </div>
                                 </div>
                             ))
                         }

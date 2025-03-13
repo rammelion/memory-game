@@ -47,13 +47,16 @@ body {
         color: white;
     }
 
-    nav .operator:hover, nav .operator .selected {
-        border: 1px solid #09529F;
+    nav .operator:hover, nav .operator .active {
         color: #09529F;
         background-color: white;
     }
 
-    nav .operator .selected:hover {
+    nav .operator .active {
+        border: 1px solid #09529F;
+    }
+
+    nav .operator .active:hover {
         border: none;
         background-color: #09529F;
         color: white;
@@ -80,27 +83,29 @@ body {
     margin: 5rem auto 0 auto;
     }
 
+    .card {
+        aspect-ratio: 1/1.5;
+        border: 1px solid #09529F;
+        border-radius: 5px;
+        cursor: pointer;
+        margin:1rem;
+        font-size: small;
+    }
+
     .card-down {
-    aspect-ratio: 1/1.5;
-    cursor: pointer;
-    margin:1rem;
     background-image: url('https://memorygame.rammelion.hu/assets/img/card.webp');
     background-repeat: no-repeat;
     background-size: cover;
     color:transparent;
+    
     }
 
     .card-up {
-    aspect-ratio: 1/1.5;
-    cursor: pointer;
-    margin:1rem;
-    border: 1px solid #09529F;
-    border-radius: 5px;
+    
     background-image: url('https://memorygame.rammelion.hu/assets/img/card-up.webp');
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
-    line-height: 1rem;
     color:black;
     }
 
